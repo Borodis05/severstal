@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 
 from app.database.config import SessionLocal
-from app.database.models import Task
+from app.database.models import Task, TaskStatus
 from app.domain.exceptions import DuplicateTitleError
 
 def create_task(task: Task) -> Task:
@@ -46,3 +46,36 @@ def delete_task(task_id: int) -> bool:
         session.delete(task)
         session.commit()
         return True
+
+def replace_task(*, task_id: int, title: str, description: str | None, status: TaskStatus) -> Task | None:
+    with SessionLocal() as session:
+        task = session.get(Task, task_id)
+        if not task:
+            return None
+        task.title = title
+        task.description = description
+        task.status = status
+        session.commit()
+        session.refresh(task)
+        return task
+
+def update_task(
+    *,
+    task_id: int,
+    title: str | None = None,
+    description: str | None = None,
+    status: TaskStatus | None = None,
+) -> Task | None:
+    with SessionLocal() as session:
+        task = session.get(Task, task_id)
+        if not task:
+            return None
+        if title is not None:
+            task.title = title
+        if description is not None:
+            task.description = description
+        if status is not None:
+            task.status = status
+        session.commit()
+        session.refresh(task)
+        return task

@@ -2,8 +2,9 @@ from fastapi import APIRouter, HTTPException, Query, status
 from typing import List, Optional
 
 from app.domain.exceptions import DuplicateTitleError, TaskNotFoundError
-from app.domain.tasks.service import create_task_service, get_tasks_service, get_task_service, delete_task_service
-from .schemas import TaskOut, TaskIn
+from app.domain.tasks.service import (create_task_service, get_tasks_service, get_task_service, delete_task_service,
+                                      replace_task_service, update_task_service)
+from .schemas import TaskOut, TaskIn, TaskReplace, TaskUpdate
 
 router = APIRouter()
 
@@ -50,5 +51,30 @@ async def get_task_route(task_id: int):
 async def delete_task_route(task_id: int):
     try:
         delete_task_service(task_id)
+    except TaskNotFoundError:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+
+@router.put("/{task_id}", response_model=TaskOut)
+async def replace_task_route(task_id: int, data: TaskReplace):
+    try:
+        return replace_task_service(
+            task_id=task_id,
+            title=data.title,
+            description=data.description,
+            status=data.status,
+        )
+    except TaskNotFoundError:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+@router.patch("/{task_id}", response_model=TaskOut)
+async def update_task_route(task_id: int, data: TaskUpdate):
+    try:
+        return update_task_service(
+            task_id=task_id,
+            title=data.title,
+            description=data.description,
+            status=data.status,
+        )
     except TaskNotFoundError:
         raise HTTPException(status_code=404, detail="Task not found")

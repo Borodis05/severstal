@@ -27,3 +27,13 @@ class TaskOut(TaskBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+class TaskReplace(BaseModel):
+    title: str
+    description: str | None = None
+    status: TaskStatus
+
+class TaskUpdate(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    status: TaskStatus | None = None
