@@ -1,6 +1,8 @@
 from datetime import datetime
 from enum import Enum as PyEnum
 
+from typing import Optional
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -11,6 +13,7 @@ class TaskStatus(str, PyEnum):
 
 class TaskBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=255)
+    description: Optional[str] = Field(default=None, max_length=1000)
     status: TaskStatus = TaskStatus.active
 
 

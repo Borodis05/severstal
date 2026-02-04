@@ -4,3 +4,4 @@ python-dotenv
 pydantic-settings
 SQLAlchemy
 psycopg[binary]
+alembic

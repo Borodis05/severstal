@@ -7,11 +7,13 @@ from app.domain.exceptions import TaskNotFoundError
 def create_task_service(
     *,
     title: str,
+    description: Optional[str] = None,
     status: TaskStatus,
 ) -> Task:
         return create_task(
             Task(
                 title=title,
+                description=description,
                 status=status,
             )
         )

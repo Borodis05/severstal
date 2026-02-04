@@ -16,6 +16,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  migrations:
+    build:
+      context: .
+    restart: "no"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["alembic", "upgrade", "head"]
+
   api:
     build:
       context: .
@@ -25,6 +36,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
     ports:
       - "8001:8000"
 

@@ -12,6 +12,7 @@ async def create_task_route(data: TaskIn):
     try:
         return create_task_service(
             title=data.title,
+            description=data.description,
             status=data.status,
         )
     except DuplicateTitleError:

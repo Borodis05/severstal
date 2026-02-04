@@ -16,6 +16,7 @@ class Task(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False, unique=True)
+    description = Column(String(1000), nullable=True)
     status = Column(Enum(TaskStatus, name="task_status"), nullable=False, default=TaskStatus.active)
     created_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
