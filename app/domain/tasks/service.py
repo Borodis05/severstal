@@ -1,7 +1,7 @@
 from typing import Optional
 
 from app.database.models import Task, TaskStatus
-from .repository import create_task, get_tasks, get_task
+from .repository import create_task, get_tasks, get_task, delete_task
 from app.domain.exceptions import TaskNotFoundError
 
 def create_task_service(
@@ -29,3 +29,8 @@ def get_task_service(task_id: int) -> Task:
     if not task:
         raise TaskNotFoundError
     return task
+
+def delete_task_service(task_id: int) -> None:
+    deleted = delete_task(task_id)
+    if not deleted:
+        raise TaskNotFoundError

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Query, status
 from typing import List, Optional
 
 from app.domain.exceptions import DuplicateTitleError, TaskNotFoundError
-from app.domain.tasks.service import create_task_service, get_tasks_service, get_task_service
+from app.domain.tasks.service import create_task_service, get_tasks_service, get_task_service, delete_task_service
 from .schemas import TaskOut, TaskIn
 
 router = APIRouter()
@@ -41,5 +41,13 @@ async def get_tasks_route(
 async def get_task_route(task_id: int):
     try:
         return get_task_service(task_id)
+    except TaskNotFoundError:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+
+@router.delete("/{task_id}", status_code=204)
+async def delete_task_route(task_id: int):
+    try:
+        delete_task_service(task_id)
     except TaskNotFoundError:
         raise HTTPException(status_code=404, detail="Task not found")

@@ -37,3 +37,12 @@ def get_tasks(
 def get_task(task_id: int) -> Optional[Task]:
     with SessionLocal() as session:
         return session.query(Task).filter(Task.id == task_id).first()
+
+def delete_task(task_id: int) -> bool:
+    with SessionLocal() as session:
+        task = session.query(Task).filter(Task.id == task_id).first()
+        if not task:
+            return False
+        session.delete(task)
+        session.commit()
+        return True
