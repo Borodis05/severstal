@@ -1,7 +1,7 @@
 """add description to tasks
 
 Revision ID: 20260204_add_description
-Revises: 
+Revises: 20260204_create_tasks
 Create Date: 2026-02-04 21:40:00
 """
 from __future__ import annotations
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "20260204_add_description"
-down_revision = None
+down_revision = "20260204_create_tasks"
 branch_labels = None
 depends_on = None
 

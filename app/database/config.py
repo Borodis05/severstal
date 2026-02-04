@@ -1,11 +1,14 @@
+import os
+
 from app.core.config import settings
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = (
+SQLALCHEMY_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
     f"postgresql+psycopg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}"
-    f"@db:5432/{settings.POSTGRES_DB}"
+    f"@db:5432/{settings.POSTGRES_DB}",
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
