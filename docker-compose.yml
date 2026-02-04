@@ -39,7 +39,7 @@ services:
       migrations:
         condition: service_completed_successfully
     ports:
-      - "8001:8000"
+      - "8000:8000"
 
   tests:
     build:
